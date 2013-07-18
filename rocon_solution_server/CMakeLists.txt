@@ -11,6 +11,8 @@ add_message_files(
   FILES
   RoconService.msg
   RoconServiceList.msg
+  RoconAgent.msg
+  RoconAgentList.msg
 )
 
 ## Generate services in the 'srv' folder

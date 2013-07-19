@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-
 import rospy
 import random
 from rocon_solution_msgs.msg import *

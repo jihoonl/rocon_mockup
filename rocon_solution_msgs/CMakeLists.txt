@@ -11,14 +11,21 @@ add_message_files(
   RoconServiceList.msg
   RoconAgent.msg
   RoconAgentList.msg
+  RoconJob.msg
+  RoconJobList.msg
+  
+  JobApplication.msg
+  JobPost.msg
+  JobPostList.msg
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  DIRECTORY srv
+  FILES
+  AddService.srv
+  AddJobs.srv
+)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(

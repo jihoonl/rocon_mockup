@@ -6,3 +6,4 @@ roles:
     name: OrderReceiver
     condition:
       flirt_level      : "99"
+      seriousness      : "35"

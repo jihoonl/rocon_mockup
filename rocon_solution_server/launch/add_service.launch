@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="rocon_solution_server" name="add_srv" type="add_srv.py">
+    <param name="filename" value="$(find rocon_solution_server)/services/DrinkDelivery.service"/>
+  </node>
+</launch>

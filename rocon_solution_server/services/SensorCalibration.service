@@ -1,0 +1,13 @@
+name: SensorCalibration
+description: Robot moves around and calibrates the location of camera sensors
+priority: 1
+roles:
+  -
+    name: Calibrator
+    condition:
+      minumum_speed   : "100km/s"
+      battery_status  : "5hrs"
+  -
+    name: CameraManager
+    condition:
+      fine_pixel      : "999"

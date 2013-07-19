@@ -2,7 +2,7 @@
 
 import rospy
 import random
-from rocon_solution_server.msg import *
+from rocon_solution_msgs.msg import *
 
 class SolutionMockup():
 
@@ -27,7 +27,7 @@ class SolutionMockup():
         name = ["Drink Delivery","Floor Cleaning","Sensor Validation"]
 
         for n in name:
-            service = RoconService(n,random.randint(0,2))
+            service = RoconService(n,random.randint(0,2),range(random.randint(1,4)),['Waiter','Manager'],['speed:99m/s','Brilliantness: low'])
             self.services.append(service)
 
     def publish_servicelist(self,list):
@@ -41,4 +41,5 @@ class SolutionMockup():
         self.create_fake_services()
         self.publish_agentlist(self.agents)
         self.publish_servicelist(self.services)
+#        self.publish_jobs(self.jobs)
         rospy.spin()

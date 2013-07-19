@@ -11,6 +11,7 @@
     <link href="css/bootstrap.css" rel="stylesheet"></link>
     <link href="css/bootstrap-button.css" rel="stylesheet"></link>
     <script src="js/jquery.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/bootstrap/bootstrap.js"></script>
     <script src="js/bootstrap/bootstrap-button.js"></script>
     <script src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
@@ -23,6 +24,10 @@
       }
       .sidebar-nav {
         padding: 9px 0;
+      }
+
+      .myclass {
+        width:600pt;
       }
 
       @media (max-width: 980px) {
@@ -44,9 +49,9 @@
 
     var ros = new ROSLIB.Ros();
     var agentlist_topic= "solution_mockup/concert_agent_list";
-    var agentlist_type = "rocon_solution_server/RoconAgentList";
+    var agentlist_type = "rocon_solution_msgs/RoconAgentList";
     var servicelist_topic = "solution_mockup/rocon_service_list";
-    var servicelist_type = "rocon_solution_server/RoconServiceList";
+    var servicelist_type = "rocon_solution_msgs/RoconServiceList";
     var defaultUrL = 'ws://localhost:9090';
 
     var agent_list_div;
@@ -152,14 +157,83 @@
       srv.style.border = "thin dotted";
       srv.style.padding ="5pt";
 
+      var html = createServiceHTML(service);
+
       $(srv).hover(
           function() { this.style.background= "gray"; },
           function() { this.style.background= "";     }
       );
 
-      $(srv).popover({title:service.name,content:'Hola!',placement:'bottom'});
+      var template = '<div class="popover myclass"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>';
+
+      $(srv).popover({template:template,title:service.name,html:'true',content:html,placement:'bottom'});
 
       return srv;
+    }
+
+    function createServiceHTML(service)
+    {
+      var html = document.createElement('div');
+      html.className = 'row-fluid';
+
+      var roles = document.createElement('div');
+      roles.className='span12';
+      roles.style.borderBottom = "1px solid light-gray";
+      var role_strong = document.createElement('strong');
+      role_strong.innerHTML = 'Role Requirements';
+      roles.appendChild(role_strong);
+      html.appendChild(roles);
+
+
+      var roles_div = document.createElement('div');
+      roles_div.className = 'row-fluid';
+
+      for(r in service.roles)
+      {
+        var div = createRoleline(service.roles[r],service.role_requirements[r]);
+        roles_div.appendChild(div);        
+      }
+      html.appendChild(roles_div);
+
+      var job_title = document.createElement('strong');
+      job_title.innerHTML ="Related Jobs : <br/>";
+      html.appendChild(job_title);
+      var job_div = document.createElement('div');
+      job_div.innerHTML = ""
+
+      for(s in service.jobs)
+      {
+        job_div.innerHTML += "#" + service.jobs[s] + ", "
+      }
+      html.appendChild(job_div);
+      return html;
+    }
+
+    function createRoleline(role_name,role_requirements)
+    {
+      var role_div = document.createElement('div');
+      role_div.className = 'row-fluid';
+
+      var name_div = document.createElement('strong');
+      name_div.className = 'span4';
+      name_div.innerHTML = role_name;
+
+      var req_div = document.createElement('div');
+      req_div.className = 'span6';
+      req_div.innerHTML = role_requirements;
+
+      role_div.appendChild(name_div);
+      role_div.appendChild(req_div);
+
+      var template = '<div class="popover myclass"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>';
+      
+      $(role_div).hover(
+          function() { this.style.background= "#d3d3d3"; },
+          function() { this.style.background= "";     }
+      );
+      $(role_div).popover({template:template, trigger:"hover",title:role_name,placement:'right',content:'Lists all available agents can fit into this role'});
+
+      return role_div;
     }
 
 
@@ -177,95 +251,6 @@
       $(li).popover({container:li,title:agent.name, placement:'left',content:'Show log.. Detailed information of agent'});
 
       return li;
-    }
-
-    function createOrderDiv(order) {
-      var div = document.createElement('div');
-      div.className = "span4";
-      div.style.border = "thin dotted";
-      div.style.padding = "5pt";
-      var h = document.createElement('h3');
-      h.innerHTML = "Order : " + order.order_id;
-      div.appendChild(h);
-
-      var elements_robot= createRowLine('Robot : ',order.robot_name);
-      div.appendChild(elements_robot);
-
-      var elements_table = createRowLine('Table : ' ,order.table_id);
-      div.appendChild(elements_table);
-
-      var elements_status = createRowLine('Status : ',STATUS_STRING[order.status]);
-      div.appendChild(elements_status);
-
-      var menudiv = createMenuDiv(order.menus);
-      div.appendChild(menudiv); 
-
-      $(div).hover(
-          function() { this.style.background= "gray"; },
-          function() { this.style.background= "";     }
-      );
-
-      $(div).click(function() {
-//        hero_div.empty();
-//        var hero_element = createHeroDiv(order);
-//        hero_div.append(hero_element);
-
-      });
-
-      return div;
-    }
-
-    function createRowLine(name,element)
-    {
-      var div = createDiv('','row-fluid');
-      var title = document.createElement('strong');
-      title.className = 'span4';
-      title.innerHTML = name; 
-      div.appendChild(title);
-
-      var el = createDiv(element,'span8');
-//      el.style.marginTop = '10px';
-      div.appendChild(el);
-
-      return div;
-    }
-
-
-    function createMenuDiv(menus) 
-    {
-      var externaldiv = document.createElement('div');
-      var div = createRow('h5','row-fluid',['Name','Size','Qty'],'span4');
-
-      externaldiv.appendChild(div);
-
-      var i;
-      for(i in menus) {
-        var m = menus[i]; 
-        var d= createRow('div','row-fluid',[m.name,m.size,m.qty],'span4');
-        externaldiv.appendChild(d);
-      }
-      return externaldiv;
-    }
-
-    function createRow(rowel,rowclass,elements,elementclass)
-    {
-      var div = document.createElement(rowel);
-      div.className = rowclass;
-
-      var i;
-      for(i in elements) { 
-        var e = createDiv(elements[i],elementclass);
-        div.appendChild(e);
-      }
-      return div;
-    }
-    
-    function createDiv(text,elementclass) {
-      var div = document.createElement('div'); 
-      div.className = elementclass;
-      div.innerHTML = text;
-
-      return div;
     }
 
     </script>

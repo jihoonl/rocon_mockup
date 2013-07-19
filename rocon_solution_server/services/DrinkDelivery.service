@@ -1,0 +1,8 @@
+name: DrinkDelivery
+description: Deliver drinks
+priority: 1
+roles:
+  - 
+    name: OrderReceiver
+    condition:
+      flirt_level      : "99"

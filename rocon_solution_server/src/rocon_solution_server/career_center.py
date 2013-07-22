@@ -14,9 +14,10 @@ class CareerCenter(object):
 
     def __init__(self):
         self.srv['post_jobs'] = rospy.Service('post_jobs',AddJobs,self.processJobPosting)
-        self.pub['job_announcement'] = rospy.Publisher('job_announcement',JobPostList)
+        self.pub['job_announcement'] = rospy.Publisher('job_announcement',JobPostList, latch=True)
 
     def processJobPosting(self,srv):
+        rospy.loginfo(str(srv))
         for j in srv.posts:
             self.jobs.append(j)
 

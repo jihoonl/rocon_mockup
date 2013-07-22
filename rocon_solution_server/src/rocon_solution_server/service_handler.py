@@ -19,6 +19,8 @@ class ServiceHandler(object):
 
     def processAddService(self,req):
         service = self.load_service_from_file(req.filename)
+
+
         self.rocon_service.append(service)
         self.post_jobs(service)
 
@@ -31,7 +33,6 @@ class ServiceHandler(object):
         return yaml_data
 
     def post_jobs(self,service):
-
         jp = AddJobsRequest()
         for r in service['roles']:
             condition = [str(n) + ' : ' + str(c) for n,c in r['condition'].items()]
@@ -39,6 +40,8 @@ class ServiceHandler(object):
             self.id_inc = self.id_inc + 1
             jp.posts.append(job_post)
 
+        rospy.loginfo(str(job_post))
+        rospy.loginfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         self.srv_proxy['post_jobs'](jp)
 
     def log(self,msg):

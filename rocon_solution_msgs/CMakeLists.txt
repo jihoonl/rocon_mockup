@@ -25,6 +25,7 @@ add_service_files(
   FILES
   AddService.srv
   AddJobs.srv
+  JobOffer.srv
 )
 
 # Generate added messages and services with any dependencies listed here

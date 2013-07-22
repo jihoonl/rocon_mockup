@@ -5,7 +5,7 @@ roles:
   -
     name: Calibrator
     condition:
-      minumum_speed   : "100km/s"
+      minimum_speed   : "100km/s"
       battery_status  : "5hrs"
   -
     name: CameraManager

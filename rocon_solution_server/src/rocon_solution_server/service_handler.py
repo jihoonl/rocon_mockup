@@ -35,8 +35,10 @@ class ServiceHandler(object):
     def post_jobs(self,service):
         jp = AddJobsRequest()
         for r in service['roles']:
-            condition = [str(n) + ' : ' + str(c) for n,c in r['condition'].items()]
-            job_post = JobPost(service['name'],r['name'],condition,service['priority'],self.id_inc)
+            self.log(str(r['condition']))
+            condition = [str(n) for n in r['condition'].keys()]
+            condition_value = [int(n) for n in r['condition'].values()]
+            job_post = JobPost(service['name'],r['name'],condition,condition_value,service['priority'],self.id_inc)
             self.id_inc = self.id_inc + 1
             jp.posts.append(job_post)
         self.srv_proxy['post_jobs'](jp)

@@ -6,7 +6,6 @@ roles:
     name: OrderReceiver
     interruptible: false
     condition:
-      - 
-        phone: true
-        create_job: true
+        phone: 1
+        create_job: 1
 

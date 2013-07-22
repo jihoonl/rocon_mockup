@@ -6,6 +6,5 @@ roles:
     name: Cleaner
     interruptible: true
     condition:
-      -
         vacuum: 100
         minimum_speepd: 1

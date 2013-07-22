@@ -13,4 +13,4 @@ roles:
   -
     name: Database
     condition:
-      mysql: true
+      mysql: 1

@@ -1,0 +1,10 @@
+name: Cleaning
+description: sweeping room
+priority: 3
+roles:
+  - 
+    name: Cleaner
+    interaction:
+      clean_clean
+    condition:
+      cleaning: 100

@@ -4,6 +4,7 @@ priority: 1
 roles:
   - 
     name: OrderReceiver
+    functionality: phone
     condition:
       flirt_level      : "99"
       seriousness      : "35"

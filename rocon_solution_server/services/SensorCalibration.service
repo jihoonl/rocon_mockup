@@ -5,9 +5,12 @@ roles:
   -
     name: Calibrator
     condition:
-      minimum_speed   : "100km/s"
-      battery_status  : "5hrs"
+      minimum_speed   : 10
   -
     name: CameraManager
     condition:
-      fine_pixel      : "999"
+      camera_links: 5 
+  -
+    name: Database
+    condition:
+      mysql: true

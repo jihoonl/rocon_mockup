@@ -4,7 +4,9 @@ priority: 1
 roles:
   - 
     name: OrderReceiver
-    functionality: phone
+    interruptible: false
     condition:
-      flirt_level      : "99"
-      seriousness      : "35"
+      - 
+        phone: true
+        create_job: true
+

@@ -4,7 +4,8 @@ priority: 3
 roles:
   - 
     name: Cleaner
-    interaction:
-      clean_clean
+    interruptible: true
     condition:
-      cleaning: 100
+      -
+        vacuum: 100
+        minimum_speepd: 1

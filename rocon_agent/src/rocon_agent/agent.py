@@ -30,19 +30,39 @@ class Agent(object):
       self.data = yaml_data
 
     def processJobAnnouncement(self,msg):
+      self.log("Received available job list")
       job_names = None
 
-      if current_job == None:
+      self.log("Check whats job I can do...")
+      self.job_compatibility_test(msg.list)
+
+      self.log("Check the job priorities..if available job is higher than current job apply for the higher priority job")
+      if self.current_job == None:
         job_names = [ j.job_name for j in msg.list]
       else:
-        job_names = [j.job_names for j in msg.list if j.priority > current_job.priority]
+        job_names = [j.job_names for j in msg.list if j.priority > self.current_job.priority]
 
-      rospy.loginfo(str(job_names))
-        
-        
+      self.log("Appling for jobs..." + str(job_names))
+
+      self.apply_for_jobs(job_names)
+
 
     def processJobOffer(self,req):
       return JobOfferResponse(True)
+
+    def job_compatibility_test(self,job_list):
+      self.log("I'm mockup. I can do everything...")
+
+    def apply_for_jobs(self,job_names):
+      ja = rocon_solution_msgs.msg.JobApplication()
+      ja.job_name = job_names
+      ja.agent_name = rospy.get_name()
+
+      if self.current_job:
+          ja.current_job = self.current_job 
+      
+
+      self.pub['apply_for_job'].publish(ja)
 
     def log(self,msg):
       rospy.loginfo(rospy.get_name() + " : " + str(msg))

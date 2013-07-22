@@ -39,9 +39,6 @@ class ServiceHandler(object):
             job_post = JobPost(service['name'],r['name'],condition,service['priority'],self.id_inc)
             self.id_inc = self.id_inc + 1
             jp.posts.append(job_post)
-
-        rospy.loginfo(str(job_post))
-        rospy.loginfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         self.srv_proxy['post_jobs'](jp)
 
     def log(self,msg):

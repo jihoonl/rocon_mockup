@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="rocon_agent" type="roconagent.py" name="hydro" output="screen">
+    <param name="agent_spec" value="$(find rocon_agent)/specs/hydro.agent"/>
+  </node>
+</launch>

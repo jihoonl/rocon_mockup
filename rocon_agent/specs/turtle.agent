@@ -1,2 +1,4 @@
 name: Turtle
 description: I'm Turtle
+condition:
+  mysql: 1

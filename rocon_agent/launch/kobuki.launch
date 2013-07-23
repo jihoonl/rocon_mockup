@@ -2,10 +2,4 @@
   <node pkg="rocon_agent" type="roconagent.py" name="kobuki" output="screen">
     <param name="agent_spec" value="$(find rocon_agent)/specs/kobuki.agent"/>
   </node>
-  <node pkg="rocon_agent" type="roconagent.py" name="turtle" output="screen">
-    <param name="agent_spec" value="$(find rocon_agent)/specs/turtle.agent"/>
-  </node>
-  <node pkg="rocon_agent" type="roconagent.py" name="hydro" output="screen">
-    <param name="agent_spec" value="$(find rocon_agent)/specs/hydro.agent"/>
-  </node>
 </launch>

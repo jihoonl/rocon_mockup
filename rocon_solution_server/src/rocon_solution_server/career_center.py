@@ -24,7 +24,7 @@ class CareerCenter(object):
         for j in srv.posts:
             self.jobs.append(j)
 
-        job_names = [ j.job_name for j in srv.posts]
+        job_names = [j.job_name for j in srv.posts]
         self.log("Received Joblists. " + str(job_names))
         self.log("Announcing...the updated job list")
         self.announce() 

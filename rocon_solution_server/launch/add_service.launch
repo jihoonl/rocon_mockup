@@ -5,9 +5,7 @@
   <node pkg="rocon_solution_server" name="add_srv" type="add_srv.py">
     <param name="filename" value="$(find rocon_solution_server)/services/DrinkDelivery.service"/>
   </node>
-  <!--
   <node pkg="rocon_solution_server" name="add_srv2" type="add_srv.py">
     <param name="filename" value="$(find rocon_solution_server)/services/SensorCalibration.service"/>
   </node>
-  -->
 </launch>

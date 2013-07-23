@@ -1,0 +1,4 @@
+name: CameraManager
+description: I'm Manager Huey
+condition:
+  camera_links: 5

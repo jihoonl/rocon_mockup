@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find rocon_agent)/launch/kobuki.launch"/>
+  <include file="$(find rocon_agent)/launch/turtle.launch"/>
+  <include file="$(find rocon_agent)/launch/hydro.launch"/>
+  <include file="$(find rocon_agent)/launch/camera_m.launch"/>
+</launch>

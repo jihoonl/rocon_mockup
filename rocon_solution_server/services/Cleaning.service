@@ -7,4 +7,4 @@ roles:
     interruptible: true
     condition:
         vacuum: 100
-        minimum_speepd: 1
+        minimum_speed: 1

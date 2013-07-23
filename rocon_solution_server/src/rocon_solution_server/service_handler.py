@@ -35,10 +35,10 @@ class ServiceHandler(object):
     def post_jobs(self,service):
         jp = AddJobsRequest()
         for r in service['roles']:
-            self.log(str(r['condition']))
+            interruptible = True if 'interruptible' in r and r['interruptible'] else False
             condition = [str(n) for n in r['condition'].keys()]
             condition_value = [int(n) for n in r['condition'].values()]
-            job_post = JobPost(service['name'],r['name'],condition,condition_value,service['priority'],self.id_inc)
+            job_post = JobPost(service['name'],r['name'],condition,condition_value,interruptible,service['priority'],self.id_inc)
             self.id_inc = self.id_inc + 1
             jp.posts.append(job_post)
         self.srv_proxy['post_jobs'](jp)

@@ -17,10 +17,10 @@ class CareerCenter(object):
         self.applications = applications
 
         self.pub['job_announcement'] = rospy.Publisher('job_announcement',JobPostList, latch=True)
-        self.sub['apply_for_job'] = rospy.Subscriber('apply_for_job',JobApplication,self.processJobApplication)
-        self.srv['post_jobs'] = rospy.Service('post_jobs',AddJobs,self.processJobPosting)
+        self.sub['apply_for_job'] = rospy.Subscriber('apply_for_job',JobApplication,self.process_job_application)
+        self.srv['post_jobs'] = rospy.Service('post_jobs',AddJobs,self.process_job_posting)
 
-    def processJobPosting(self,srv):
+    def process_job_posting(self,srv):
         for j in srv.posts:
             self.jobs.append(j)
 
@@ -34,7 +34,7 @@ class CareerCenter(object):
     def announce(self):
         self.pub['job_announcement'].publish(self.jobs)
 
-    def processJobApplication(self,msg):
+    def process_job_application(self,msg):
         
         for job in msg.job_name:
             if job not in self.applications:
@@ -43,9 +43,13 @@ class CareerCenter(object):
             self.applications[job][msg.agent_name] = msg
 
         self.print_application()
+
+    def get_job_applications(self):
+        return self.jobs, self.applications
         
     def log(self,msg):
         rospy.loginfo(rospy.get_name() + ' : ' + str(msg))
+
 
 
     def print_application(self):

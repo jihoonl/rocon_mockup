@@ -4,7 +4,7 @@ import random
 from rocon_solution_msgs.msg import *
 from .service_handler import *
 from .career_center import *
-#from .composer import *
+from .composer import *
 class Solution():
   
     service_handler = None
@@ -16,7 +16,7 @@ class Solution():
     def __init__(self):
         self.service_handler = ServiceHandler()
         self.rocon_careercenter = CareerCenter(self.applications)
-#    self.composer = Composer(applications)
+        self.composer = Composer(self.rocon_careercenter)
         self.log("Hola")
 
     def log(self,msg):

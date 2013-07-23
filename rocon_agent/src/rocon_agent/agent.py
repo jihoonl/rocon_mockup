@@ -21,7 +21,7 @@ class Agent(object):
         self.sub['job_announcement'] =    rospy.Subscriber('job_announcement',rocon_solution_msgs.msg.JobPostList,self.processJobAnnouncement)
         self.pub['apply_for_job'] = rospy.Publisher('apply_for_job',rocon_solution_msgs.msg.JobApplication)
         self.srv_proxy['post_jobs'] = rospy.ServiceProxy('post_jobs',rocon_solution_msgs.srv.AddJobs)
-        self.srv['job_offer'] = rospy.Service('job_offer',rocon_solution_msgs.srv.JobOffer,self.processJobOffer)
+        self.srv['job_offer'] = rospy.Service('~job_offer',rocon_solution_msgs.srv.JobOffer,self.processJobOffer)
 
     def load_agent(self,filename):
         with open(filename) as f:
@@ -57,6 +57,9 @@ class Agent(object):
 
 
     def processJobOffer(self,req):
+        self.log("Recieved " + str(req.job.job_name) + " offer")
+        self.log("Acceppting it...")
+        self.current_job = req.job
         return JobOfferResponse(True)
 
     def job_compatibility_test(self,job_list):

@@ -26,7 +26,6 @@ class Composer(object):
         self.log("Cleaner       - kobuki")
         self.log("OrderReceiver - hydro")
         self.log("Database      - turtle")
-        self.log(str(jobs))
 
         combination = {}
         combination['camera'] = 'CameraManager'

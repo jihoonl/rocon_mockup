@@ -1,0 +1,6 @@
+cleaning_service:
+  priority: 3
+  interruptible: true
+delivery_service:
+  priority: 1
+  interruptible: false

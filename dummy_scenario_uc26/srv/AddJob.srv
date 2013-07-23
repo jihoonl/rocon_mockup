@@ -1,0 +1,4 @@
+string job_name
+int16  priority
+---
+bool result

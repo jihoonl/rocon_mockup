@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="dummy_scenario_uc26" type="solution.py" name="solution">
+        <param name="services" value="$(find dummy_scenario_uc26)/services/services"/>
+    </node>
+</launch>

@@ -1,6 +1,6 @@
 name: DrinkDelivery
 description: Deliver drinks
-priority: 1
+priority: 4
 roles:
   - 
     name: OrderReceiver

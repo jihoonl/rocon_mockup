@@ -3,3 +3,5 @@ description: I'm Kobuki
 condition:
   vacuum: 100
   minimum_speed: 1
+  phone: 1
+  create_job: 1

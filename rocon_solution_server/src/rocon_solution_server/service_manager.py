@@ -5,7 +5,7 @@ from rocon_solution_msgs.msg import *
 from .service_handler import *
 from .career_center import *
 from .composer import *
-class Solution():
+class ServiceManager():
   
     service_handler = None
     career_center   = None
@@ -13,11 +13,11 @@ class Solution():
 
     applications    = {}
 
-    def __init__(self):
-        self.service_handler = ServiceHandler()
+    def __init__(self,filename,review_process):
         self.rocon_careercenter = CareerCenter(self.applications)
-        self.composer = Composer(self.rocon_careercenter)
-        self.log("Hola")
+        self.service_handler = ServiceHandler(filename)
+        self.composer = Composer(self.rocon_careercenter,review_process)
+#        self.log("Hola")
 
     def log(self,msg):
         rospy.loginfo(rospy.get_name() + ' : ' + str(msg))

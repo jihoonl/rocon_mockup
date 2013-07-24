@@ -2,3 +2,4 @@ name: Turtle
 description: I'm Turtle
 condition:
   mysql: 1
+  camera_links: 5

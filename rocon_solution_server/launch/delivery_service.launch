@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rocon_solution_server" name="delivery_service" type="s_manager.py" output="screen">
+    <param name="service" value="$(find rocon_solution_server)/services/DrinkDelivery.service"/>
+    <param name="reviewer" value="review_drink"/>
+  </node>
+</launch>

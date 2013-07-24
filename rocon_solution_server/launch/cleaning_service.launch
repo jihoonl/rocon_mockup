@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rocon_solution_server" name="cleaning_service" type="s_manager.py" output="screen">
+    <param name="service" value="$(find rocon_solution_server)/services/Cleaning.service"/>
+    <param name="reviewer" value="review_cleaning"/>
+  </node>
+</launch>

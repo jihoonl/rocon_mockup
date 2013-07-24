@@ -3,6 +3,7 @@
 import rospy
 import random
 import yaml
+from threading import Lock
 from rocon_solution_msgs.msg import *
 from rocon_solution_msgs.srv import *
 
@@ -13,15 +14,19 @@ class Agent(object):
     srv_proxy = {}
     srv = {}
     data = {}
+    applied_services= []
+    lock = None
 
     current_job = None
 
     def __init__(self,filename):
         self.load_agent(filename)
         self.sub['job_announcement'] =    rospy.Subscriber('job_announcement',rocon_solution_msgs.msg.JobPostList,self.processJobAnnouncement)
-        self.pub['apply_for_job'] = rospy.Publisher('apply_for_job',rocon_solution_msgs.msg.JobApplication)
-        self.srv_proxy['post_jobs'] = rospy.ServiceProxy('post_jobs',rocon_solution_msgs.srv.AddJobs)
+#        self.pub['apply_for_job'] = rospy.Publisher('apply_for_job',rocon_solution_msgs.msg.JobApplication)
+#        self.srv_proxy['post_jobs'] = rospy.ServiceProxy('post_jobs',rocon_solution_msgs.srv.AddJobs)
         self.srv['job_offer'] = rospy.Service('~job_offer',rocon_solution_msgs.srv.JobOffer,self.processJobOffer)
+
+        self.lock = Lock()
 
     def load_agent(self,filename):
         with open(filename) as f:
@@ -31,9 +36,8 @@ class Agent(object):
         self.log(self.data)
 
     def processJobAnnouncement(self,msg):
-
         job_names = [ j.job_name for j in msg.list]
-        self.log("Received available job list : " + str(job_names))
+        self.log("Received available job list from " + msg.service_node + " : " + str(job_names))
         job_names = None
 
         #  If the agent has a job already..
@@ -51,15 +55,34 @@ class Agent(object):
 
         job_names = [ j.job_name for j in filtered_list]
         self.log("Applying for jobs..." + str(job_names))
-        self.apply_for_jobs(filtered_list)
 
-        self.log("Applied")
-
+        if len(filtered_list) > 0:
+            self.apply_for_jobs(filtered_list,msg.service_node)
+            self.log("Applied to " + str(msg.service_node))
+            job_name = [j.job_name for j in filtered_list]
+            self.applied_services.append(msg.service_node)
 
     def processJobOffer(self,req):
+        self.lock.acquire()
+
         self.log("Recieved " + str(req.job.job_name) + " offer")
-        self.log("Acceppting it...")
+
+        if self.current_job:
+            if not(req.job.service_node in self.applied_services):
+                self.log("    It is not a service where I submitted applications. Declining..")
+
+                return JobOfferResponse(False) 
+
+            if req.job.priority < self.current_job.priority:
+                self.log("    Current job has higher prirority. (Offered Job[" + str(req.job.priority) + "] < CurrentJob["+str(self.current_job.priority) +"])")
+                self.log("    Decline the offer")
+                return JobOfferResponse(False) 
+            self.log("Accepting " + str(req.job.job_name) + " from " + str(req.job.service_node))
+            self.log("The new job has higher priority")
+        else:
+            self.log("Accepting " + str(req.job.job_name) + " from " + str(req.job.service_node))
         self.current_job = req.job
+        self.lock.release()
         return JobOfferResponse(True)
 
     def job_compatibility_test(self,job_list):
@@ -85,7 +108,7 @@ class Agent(object):
         return new_job_list, names
              
 
-    def apply_for_jobs(self,jobs):
+    def apply_for_jobs(self,jobs,service_node):
         ja = rocon_solution_msgs.msg.JobApplication()
         ja.job_name = [j.job_name for j in jobs]
         ja.agent_name = rospy.get_name()
@@ -93,7 +116,10 @@ class Agent(object):
         if self.current_job:
             ja.current_job = self.current_job 
 
-        self.pub['apply_for_job'].publish(ja)
+        pub = rospy.Publisher(service_node + '/apply_for_job',rocon_solution_msgs.msg.JobApplication)
+        rospy.sleep(1)
+
+        pub.publish(ja)
 
     def log(self,msg):
         rospy.loginfo(rospy.get_name() + " : " + str(msg))

@@ -5,7 +5,7 @@ from rocon_solution_msgs.msg import *
 from .service_handler import *
 from .career_center import *
 from .composer import *
-class ServiceManager():
+class ServiceRecruiter():
   
     service_handler = None
     career_center   = None

@@ -2,7 +2,7 @@
 
 import rospy 
 import std_srvs.srv
-from rocon_solution_server import ServiceManager
+from rocon_solution_server import ServiceRecruiter
 from rocon_solution_server import brain
 from rocon_solution_msgs.srv import *
 
@@ -34,10 +34,10 @@ def log(msg):
 
 if __name__ == '__main__':
 
-    rospy.init_node('service_manager')
+    rospy.init_node('service_recruiter')
     
     filename = rospy.get_param('~service')
-    mockup = ServiceManager(filename,process_review)
+    mockup = ServiceRecruiter(filename,process_review)
     rospy.loginfo('Initialized')
     mockup.spin()
     rospy.loginfo('Bye Bye')
